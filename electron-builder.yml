@@ -1,0 +1,28 @@
+appId: dev.dontworrygui.app
+productName: DontWorryGUI
+directories:
+  buildResources: resources
+  output: release
+files:
+  - out/**
+  - '!out/smoke/**'
+  - package.json
+  - '!**/*.map'
+asarUnpack:
+  - resources/**
+win:
+  icon: resources/icon.ico
+  target:
+    - target: nsis
+      arch: [x64]
+nsis:
+  oneClick: false
+  perMachine: false
+  allowToChangeInstallationDirectory: true
+  createDesktopShortcut: true
+  createStartMenuShortcut: true
+  shortcutName: DontWorryGUI
+  installerIcon: resources/icon.ico
+  uninstallerIcon: resources/icon.ico
+  installerHeaderIcon: resources/icon.ico
+  artifactName: ${productName}-${version}-setup.${ext}

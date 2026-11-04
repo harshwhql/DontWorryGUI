@@ -1,0 +1,350 @@
+@import '@fontsource-variable/inter';
+@import '@fontsource-variable/jetbrains-mono';
+@import '@xterm/xterm/css/xterm.css';
+@import 'tailwindcss';
+
+/* ------------------------------------------------------------------ *
+ * Design tokens — dark-first operations console.
+ * Deep navy rather than pure black (no OLED smear, softer on the eyes
+ * for long sessions), one green for "this will execute", amber for
+ * "this changes state", red for "this is irreversible".
+ * ------------------------------------------------------------------ */
+@theme {
+  --color-void: #05070d;
+  --color-base: #080b14;
+  --color-surface: #0c111d;
+  --color-raised: #111829;
+  --color-overlay: #16203a;
+  --color-hover: #1b2740;
+
+  --color-line: #1b2438;
+  --color-line-strong: #243150;
+  --color-edge: #2a3754;
+
+  --color-ink: #e9eef9;
+  --color-ink-dim: #9aa8c2;
+  --color-ink-faint: #64718d;
+  --color-ink-ghost: #45506a;
+
+  --color-run: #10b981;
+  --color-run-bright: #34d399;
+  --color-run-dim: #064e3b;
+
+  --color-info: #60a5fa;
+  --color-info-dim: #1e3a5f;
+  --color-warn: #fbbf24;
+  --color-warn-dim: #4a3407;
+  --color-danger: #fb7185;
+  --color-danger-dim: #4c1127;
+  --color-root: #c084fc;
+  --color-root-dim: #3b1a5c;
+
+  --font-sans:
+    'Inter Variable', 'Inter', 'Segoe UI Variable Text', 'Segoe UI', system-ui, sans-serif;
+  --font-mono:
+    'JetBrains Mono Variable', 'JetBrains Mono', 'Cascadia Mono', 'Consolas', ui-monospace,
+    monospace;
+
+  --radius-xs: 4px;
+  --radius-sm: 6px;
+  --radius-md: 9px;
+  --radius-lg: 13px;
+  --radius-xl: 18px;
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out-soft: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* dense dashboard spacing scale */
+:root {
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+
+  --rail: 56px;
+  --sidebar: 236px;
+  --titlebar: 40px;
+  --statusbar: 26px;
+
+  --z-base: 0;
+  --z-sticky: 10;
+  --z-drawer: 30;
+  --z-overlay: 60;
+  --z-modal: 80;
+  --z-toast: 100;
+  --z-palette: 120;
+
+  color-scheme: dark;
+}
+
+/* ------------------------------------------------------------------ *
+ * Base
+ * ------------------------------------------------------------------ */
+* {
+  border-color: var(--color-line);
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  background: var(--color-base);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  font-size: 13px;
+  line-height: 1.5;
+  font-feature-settings: 'cv05' 1, 'ss03' 1;
+  -webkit-font-smoothing: antialiased;
+  overflow: hidden;
+  user-select: none;
+}
+
+/* machine text is always monospaced and always tabular */
+code,
+pre,
+kbd,
+.mono {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: 'zero' 1;
+}
+
+.tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+.selectable {
+  user-select: text;
+  cursor: text;
+}
+
+button,
+[role='button'] {
+  cursor: pointer;
+}
+
+button:disabled,
+[aria-disabled='true'] {
+  cursor: not-allowed;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-run-bright);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+/* ------------------------------------------------------------------ *
+ * Scrollbars — thin, only visible where content scrolls
+ * ------------------------------------------------------------------ */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-edge) transparent;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #243049;
+  border: 3px solid transparent;
+  background-clip: content-box;
+  border-radius: 99px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #33415f;
+  background-clip: content-box;
+}
+
+::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+/* ------------------------------------------------------------------ *
+ * Reusable surface + text utilities
+ * ------------------------------------------------------------------ */
+@utility panel {
+  background: color-mix(in oklab, var(--color-surface) 92%, transparent);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-lg);
+}
+
+@utility panel-raised {
+  background: var(--color-raised);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-lg);
+  box-shadow:
+    0 1px 0 0 rgb(255 255 255 / 0.03) inset,
+    0 12px 32px -18px rgb(0 0 0 / 0.8);
+}
+
+@utility glass {
+  background: color-mix(in oklab, var(--color-overlay) 78%, transparent);
+  backdrop-filter: blur(18px) saturate(140%);
+  border: 1px solid color-mix(in oklab, var(--color-edge) 70%, transparent);
+}
+
+@utility hairline {
+  border-bottom: 1px solid var(--color-line);
+}
+
+@utility grid-fade {
+  background-image:
+    linear-gradient(to right, rgb(255 255 255 / 0.022) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(255 255 255 / 0.022) 1px, transparent 1px);
+  background-size: 26px 26px;
+}
+
+/* ------------------------------------------------------------------ *
+ * Motion — standard tier. Every animation maps to a cause.
+ * ------------------------------------------------------------------ */
+@keyframes dwg-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes dwg-scale-in {
+  from {
+    opacity: 0;
+    transform: scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes dwg-pulse-ring {
+  0% {
+    box-shadow: 0 0 0 0 color-mix(in oklab, var(--color-run) 55%, transparent);
+  }
+  70% {
+    box-shadow: 0 0 0 7px color-mix(in oklab, var(--color-run) 0%, transparent);
+  }
+  100% {
+    box-shadow: 0 0 0 0 color-mix(in oklab, var(--color-run) 0%, transparent);
+  }
+}
+
+@keyframes dwg-sweep {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(300%);
+  }
+}
+
+@keyframes dwg-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.anim-fade-up {
+  animation: dwg-fade-up 260ms var(--ease-out-expo) both;
+}
+
+.anim-scale-in {
+  animation: dwg-scale-in 180ms var(--ease-out-expo) both;
+}
+
+.anim-live {
+  animation: dwg-pulse-ring 2.4s ease-out infinite;
+}
+
+.anim-spin {
+  animation: dwg-spin 700ms linear infinite;
+}
+
+/* staggered list entrance, capped so long tables stay instant */
+.stagger > * {
+  animation: dwg-fade-up 240ms var(--ease-out-expo) both;
+}
+.stagger > *:nth-child(1) { animation-delay: 0ms; }
+.stagger > *:nth-child(2) { animation-delay: 28ms; }
+.stagger > *:nth-child(3) { animation-delay: 56ms; }
+.stagger > *:nth-child(4) { animation-delay: 84ms; }
+.stagger > *:nth-child(5) { animation-delay: 112ms; }
+.stagger > *:nth-child(6) { animation-delay: 140ms; }
+.stagger > *:nth-child(7) { animation-delay: 168ms; }
+.stagger > *:nth-child(n + 8) { animation-delay: 190ms; }
+
+.sweep::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  width: 33%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    color-mix(in oklab, var(--color-run) 22%, transparent),
+    transparent
+  );
+  animation: dwg-sweep 1.3s var(--ease-in-out-soft) infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+html[data-reduce-motion='true'] *,
+html[data-reduce-motion='true'] *::before,
+html[data-reduce-motion='true'] *::after {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+}
+
+/* ------------------------------------------------------------------ *
+ * xterm
+ * ------------------------------------------------------------------ */
+.xterm {
+  padding: 10px 12px;
+  height: 100%;
+}
+
+.xterm-viewport {
+  background-color: transparent !important;
+}
+
+.xterm .xterm-screen canvas {
+  image-rendering: -webkit-optimize-contrast;
+}
+
+/* the drag region of our custom title bar */
+.drag-region {
+  -webkit-app-region: drag;
+  app-region: drag;
+}
+
+.no-drag {
+  -webkit-app-region: no-drag;
+  app-region: no-drag;
+}
