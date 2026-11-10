@@ -187,11 +187,32 @@ export function ConfirmDialog(): React.JSX.Element | null {
 
 // Toasts
 
+/**
+ * The frosted background of `glass` paints over any `bg-*` tint, so the tone
+ * is carried by a solid bar down the leading edge instead. That survives every
+ * theme, where a 10% wash over a light surface does not.
+ */
 const TOAST_STYLE = {
-  success: { icon: Check, cls: 'border-run/35 bg-run/10', text: 'text-run-bright' },
-  error: { icon: XCircle, cls: 'border-danger/35 bg-danger/10', text: 'text-danger' },
-  warn: { icon: AlertTriangle, cls: 'border-warn/35 bg-warn/10', text: 'text-warn' },
-  info: { icon: Info, cls: 'border-info/35 bg-info/10', text: 'text-info' }
+  success: {
+    icon: Check,
+    cls: 'border-run/40 border-l-[3px] border-l-run',
+    text: 'text-run-bright'
+  },
+  error: {
+    icon: XCircle,
+    cls: 'border-danger/40 border-l-[3px] border-l-danger',
+    text: 'text-danger'
+  },
+  warn: {
+    icon: AlertTriangle,
+    cls: 'border-warn/40 border-l-[3px] border-l-warn',
+    text: 'text-warn'
+  },
+  info: {
+    icon: Info,
+    cls: 'border-info/40 border-l-[3px] border-l-info',
+    text: 'text-info'
+  }
 } as const
 
 export function Toasts(): React.JSX.Element {

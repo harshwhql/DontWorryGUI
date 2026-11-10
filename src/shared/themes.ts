@@ -84,8 +84,10 @@ export interface ThemeTokens {
   gridLine: string
   scrollbar: string
   scrollbarHover: string
-  shadowInset: string
-  shadowDrop: string
+  /** complete box-shadow for raised surfaces; light mode needs real elevation */
+  shadowRaised: string
+  /** background for frosted surfaces such as toasts and popovers */
+  glassBg: string
 }
 
 export interface Theme {
@@ -145,8 +147,9 @@ const midnight: Theme = {
     gridLine: 'rgb(255 255 255 / 0.022)',
     scrollbar: '#243049',
     scrollbarHover: '#33415f',
-    shadowInset: 'rgb(255 255 255 / 0.03)',
-    shadowDrop: 'rgb(0 0 0 / 0.8)'
+    shadowRaised:
+      '0 1px 0 0 rgb(255 255 255 / 0.03) inset, 0 12px 32px -18px rgb(0 0 0 / 0.8)',
+    glassBg: 'color-mix(in oklab, var(--color-overlay) 78%, transparent)'
   },
   terminal: {
     background: '#05070d',
@@ -213,8 +216,9 @@ const yaruDark: Theme = {
     gridLine: 'rgb(255 255 255 / 0.025)',
     scrollbar: '#4a3f43',
     scrollbarHover: '#5e5054',
-    shadowInset: 'rgb(255 255 255 / 0.04)',
-    shadowDrop: 'rgb(0 0 0 / 0.75)'
+    shadowRaised:
+      '0 1px 0 0 rgb(255 255 255 / 0.04) inset, 0 12px 32px -18px rgb(0 0 0 / 0.75)',
+    glassBg: 'color-mix(in oklab, var(--color-overlay) 80%, transparent)'
   },
   terminal: {
     background: '#2c001e',
@@ -277,12 +281,13 @@ const yaruLight: Theme = {
     dangerDim: '#fadfe1',
     root: '#8b2fa0',
     rootDim: '#f2dff7',
-    scrim: 'rgb(40 30 34 / 0.45)',
+    scrim: 'rgb(40 30 34 / 0.55)',
     gridLine: 'rgb(0 0 0 / 0.035)',
     scrollbar: '#c6bdb8',
     scrollbarHover: '#aaa09a',
-    shadowInset: 'rgb(255 255 255 / 0.9)',
-    shadowDrop: 'rgb(60 45 50 / 0.18)'
+    shadowRaised:
+      '0 1px 0 0 rgb(255 255 255 / 0.9) inset, 0 1px 2px rgb(60 45 50 / 0.1), 0 14px 30px -10px rgb(60 45 50 / 0.26)',
+    glassBg: 'color-mix(in oklab, var(--color-raised) 94%, transparent)'
   },
   terminal: {
     background: '#fdfdfc',
@@ -347,8 +352,9 @@ const fedora: Theme = {
     gridLine: 'rgb(255 255 255 / 0.022)',
     scrollbar: '#2f3a46',
     scrollbarHover: '#41505f',
-    shadowInset: 'rgb(255 255 255 / 0.035)',
-    shadowDrop: 'rgb(0 0 0 / 0.78)'
+    shadowRaised:
+      '0 1px 0 0 rgb(255 255 255 / 0.035) inset, 0 12px 32px -18px rgb(0 0 0 / 0.78)',
+    glassBg: 'color-mix(in oklab, var(--color-overlay) 78%, transparent)'
   },
   terminal: {
     background: '#0f1317',
@@ -413,8 +419,9 @@ const debian: Theme = {
     gridLine: 'rgb(255 255 255 / 0.022)',
     scrollbar: '#3d323a',
     scrollbarHover: '#51434c',
-    shadowInset: 'rgb(255 255 255 / 0.035)',
-    shadowDrop: 'rgb(0 0 0 / 0.78)'
+    shadowRaised:
+      '0 1px 0 0 rgb(255 255 255 / 0.035) inset, 0 12px 32px -18px rgb(0 0 0 / 0.78)',
+    glassBg: 'color-mix(in oklab, var(--color-overlay) 78%, transparent)'
   },
   terminal: {
     background: '#130f11',
@@ -475,12 +482,13 @@ const graphiteLight: Theme = {
     dangerDim: '#fadee2',
     root: '#7a35b8',
     rootDim: '#eee0fa',
-    scrim: 'rgb(20 26 36 / 0.45)',
+    scrim: 'rgb(20 26 36 / 0.55)',
     gridLine: 'rgb(0 0 0 / 0.032)',
     scrollbar: '#c2c8d2',
     scrollbarHover: '#a5adba',
-    shadowInset: 'rgb(255 255 255 / 0.9)',
-    shadowDrop: 'rgb(20 26 36 / 0.16)'
+    shadowRaised:
+      '0 1px 0 0 rgb(255 255 255 / 0.9) inset, 0 1px 2px rgb(20 26 36 / 0.08), 0 14px 30px -10px rgb(20 26 36 / 0.24)',
+    glassBg: 'color-mix(in oklab, var(--color-raised) 94%, transparent)'
   },
   terminal: {
     background: '#fcfdfe',
@@ -590,8 +598,8 @@ const TOKEN_VARS: Record<keyof ThemeTokens, string> = {
   gridLine: '--grid-line',
   scrollbar: '--scrollbar-thumb',
   scrollbarHover: '--scrollbar-thumb-hover',
-  shadowInset: '--shadow-inset',
-  shadowDrop: '--shadow-drop'
+  shadowRaised: '--shadow-raised',
+  glassBg: '--glass-bg'
 }
 
 /** Flat map of CSS custom properties for a theme, ready to apply to an element. */
