@@ -43,7 +43,7 @@ export function ConnectionsView(): React.JSX.Element {
           </h1>
           <p className="mt-1.5 max-w-2xl text-[13px] leading-relaxed text-ink-dim">
             Pick a server to manage its files, services, packages, containers, users and firewall
-            rules. The <Code2 size={11} className="inline align-[-1px] text-run-bright" /> next to
+            rules. The <Code2 size={11} className="inline align-[-1px] text-accent-bright" /> next to
             any action shows the shell command it runs, every command is logged at the bottom of
             the window, and the terminal is one keystroke away.
           </p>

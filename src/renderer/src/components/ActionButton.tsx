@@ -137,7 +137,7 @@ export function CommandPeek({
                     </div>
                   ) : (
                     <>
-                      <pre className="selectable max-h-44 overflow-auto rounded-md border border-line bg-void px-2.5 py-2 text-[11.5px] leading-relaxed whitespace-pre-wrap break-words text-run-bright">
+                      <pre className="selectable max-h-44 overflow-auto rounded-md border border-line bg-void px-2.5 py-2 text-[11.5px] leading-relaxed whitespace-pre-wrap break-words text-accent-bright">
                         {preview.command}
                       </pre>
                       <p className="mt-2 text-[10.5px] leading-snug text-ink-ghost">

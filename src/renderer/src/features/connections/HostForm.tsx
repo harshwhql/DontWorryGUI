@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react'
 import { FileKey, FolderOpen, KeyRound, Lock, Trash2, UserRound } from 'lucide-react'
 import type { AuthMethod, HostConfig } from '@shared/types'
+import { getTheme } from '@shared/themes'
 import { api } from '../../lib/api'
+import { ThemePicker } from '../../components/ThemePicker'
 import { cn } from '../../lib/format'
 import { Button, Field, Input, Segmented, Toggle } from '../../components/ui/primitives'
 import { Modal } from '../../components/ui/overlay'
@@ -32,6 +34,7 @@ export function HostForm({
   const connect = useApp((s) => s.connect)
   const toast = useApp((s) => s.toast)
   const askConfirm = useApp((s) => s.askConfirm)
+  const defaultTheme = useApp((s) => s.settings.defaultTheme)
 
   const [draft, setDraft] = useState<Draft>({})
   const [errors, setErrors] = useState<Record<string, string>>({})
@@ -308,6 +311,22 @@ export function HostForm({
               mono
             />
           </Field>
+        </div>
+
+        <div className="rounded-lg border border-line bg-void/40 p-3">
+          <p className="mb-2 text-[11px] font-medium text-ink-dim">
+            Theme for this server
+            <span className="ml-1.5 font-normal text-ink-ghost">
+              applied whenever it is the active server
+            </span>
+          </p>
+          <ThemePicker
+            value={draft.theme}
+            onChange={(next) => setDraft((prev) => ({ ...prev, theme: next }))}
+            allowInherit
+            inheritLabel={getTheme(defaultTheme).label}
+            columns={4}
+          />
         </div>
 
         <Field label="Notes" hint="Anything you want to remember about this box.">

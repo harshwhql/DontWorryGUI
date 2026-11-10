@@ -106,7 +106,7 @@ export function CommandInspector(): React.JSX.Element | null {
           dragState.current = { startY: event.clientY, startHeight: height }
           document.body.style.cursor = 'ns-resize'
         }}
-        className="group flex h-2 shrink-0 cursor-ns-resize items-center justify-center hover:bg-run/10"
+        className="group flex h-2 shrink-0 cursor-ns-resize items-center justify-center hover:bg-accent/10"
       >
         <GripHorizontal
           size={11}
@@ -118,7 +118,7 @@ export function CommandInspector(): React.JSX.Element | null {
       {/* toolbar */}
       <header className="flex shrink-0 items-center gap-2 border-b border-line px-3 pb-1.5">
         <div className="flex items-center gap-1.5">
-          <Radio size={12} className="text-run-bright" aria-hidden />
+          <Radio size={12} className="text-accent-bright" aria-hidden />
           <h2 className="text-[11.5px] font-semibold tracking-tight text-ink">Command log</h2>
           <span className="tabular text-[10.5px] text-ink-ghost">
             {records.length} shown · {changeCount} changed state
@@ -304,7 +304,7 @@ function Row({
             />
           </div>
 
-          <pre className="selectable mono max-h-28 overflow-auto rounded-md border border-line bg-void px-2.5 py-1.5 text-[11px] leading-relaxed whitespace-pre-wrap break-words text-run-bright">
+          <pre className="selectable mono max-h-28 overflow-auto rounded-md border border-line bg-void px-2.5 py-1.5 text-[11px] leading-relaxed whitespace-pre-wrap break-words text-accent-bright">
             {record.command}
           </pre>
 

@@ -4,7 +4,9 @@ import { FitAddon } from '@xterm/addon-fit'
 import { SearchAddon } from '@xterm/addon-search'
 import { WebLinksAddon } from '@xterm/addon-web-links'
 import { Unicode11Addon } from '@xterm/addon-unicode11'
+import type { Theme } from '@shared/themes'
 import { api } from '../../lib/api'
+import { useActiveTheme } from '../../lib/hooks'
 import { useApp } from '../../state/store'
 
 export interface TerminalHandle {
@@ -16,29 +18,34 @@ export interface TerminalHandle {
   selection: () => string
 }
 
-const THEME = {
-  background: '#05070d',
-  foreground: '#e9eef9',
-  cursor: '#34d399',
-  cursorAccent: '#05070d',
-  selectionBackground: '#1e3a5f',
-  selectionForeground: '#e9eef9',
-  black: '#0c111d',
-  red: '#fb7185',
-  green: '#34d399',
-  yellow: '#fbbf24',
-  blue: '#60a5fa',
-  magenta: '#c084fc',
-  cyan: '#22d3ee',
-  white: '#cbd5e1',
-  brightBlack: '#64718d',
-  brightRed: '#fda4af',
-  brightGreen: '#6ee7b7',
-  brightYellow: '#fcd34d',
-  brightBlue: '#93c5fd',
-  brightMagenta: '#d8b4fe',
-  brightCyan: '#67e8f9',
-  brightWhite: '#f8fafc'
+
+/** xterm wants a flat colour map; the cursor accent matches the background. */
+function xtermTheme(theme: Theme): Record<string, string> {
+  const t = theme.terminal
+  return {
+    background: t.background,
+    foreground: t.foreground,
+    cursor: t.cursor,
+    cursorAccent: t.background,
+    selectionBackground: t.selectionBackground,
+    selectionForeground: t.foreground,
+    black: t.black,
+    red: t.red,
+    green: t.green,
+    yellow: t.yellow,
+    blue: t.blue,
+    magenta: t.magenta,
+    cyan: t.cyan,
+    white: t.white,
+    brightBlack: t.brightBlack,
+    brightRed: t.brightRed,
+    brightGreen: t.brightGreen,
+    brightYellow: t.brightYellow,
+    brightBlue: t.brightBlue,
+    brightMagenta: t.brightMagenta,
+    brightCyan: t.brightCyan,
+    brightWhite: t.brightWhite
+  }
 }
 
 export const TerminalPane = forwardRef<
@@ -57,6 +64,9 @@ export const TerminalPane = forwardRef<
   const searchRef = useRef<SearchAddon | null>(null)
   const sessionRef = useRef<string | null>(null)
   const toast = useApp((s) => s.toast)
+  const theme = useActiveTheme()
+  const themeRef = useRef(theme)
+  themeRef.current = theme
 
   useImperativeHandle(ref, () => ({
     paste: (text: string) => {
@@ -98,7 +108,7 @@ export const TerminalPane = forwardRef<
       allowProposedApi: true,
       scrollback: 20_000,
       smoothScrollDuration: 90,
-      theme: THEME,
+      theme: xtermTheme(themeRef.current),
       macOptionIsMeta: true,
       rightClickSelectsWord: true
     })
@@ -182,6 +192,13 @@ export const TerminalPane = forwardRef<
     // the shell is bound to one host for the pane's lifetime
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [hostId])
+
+  // a theme switch repaints the terminal in place
+  useEffect(() => {
+    const term = termRef.current
+    if (!term) return
+    term.options.theme = xtermTheme(theme)
+  }, [theme])
 
   // font size changes without tearing the session down
   useEffect(() => {

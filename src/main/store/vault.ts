@@ -121,6 +121,7 @@ class Vault {
       privateKeyPath: input.privateKeyPath ?? previous?.privateKeyPath,
       useSudo: input.useSudo ?? previous?.useSudo ?? true,
       accent: input.accent ?? previous?.accent ?? 'emerald',
+      theme: input.theme ?? previous?.theme,
       group: input.group ?? previous?.group,
       notes: input.notes ?? previous?.notes,
       keepAliveSeconds: Number(input.keepAliveSeconds ?? previous?.keepAliveSeconds ?? 20) || 20,

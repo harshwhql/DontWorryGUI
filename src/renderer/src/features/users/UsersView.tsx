@@ -298,7 +298,7 @@ export function UsersView(): React.JSX.Element {
                 type="checkbox"
                 checked={showSystem}
                 onChange={(event) => setShowSystem(event.target.checked)}
-                className="size-3 accent-[var(--color-run)]"
+                className="size-3 accent-[var(--color-accent)]"
               />
               System accounts
             </label>

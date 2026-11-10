@@ -41,6 +41,35 @@ constraint gets you:
 Sections the server cannot support are disabled with the reason shown rather than hidden. If
 there is no systemd, Services says so.
 
+## Themes
+
+Six themes ship with the app: **Midnight** (the default dark navy), **Yaru Dark** and **Yaru
+Light** which borrow Ubuntu's aubergine greys, orange and the Ubuntu typeface, **Fedora**,
+**Debian**, and **Graphite Light**.
+
+Pick a default under Settings, and give any individual server its own in that server's
+connection settings. The theme follows whichever server is active, which is the point: staging
+can be light and production can be Debian crimson, so a glance at the window tells you where you
+are about to run something. The terminal palette, the native window frame and the scrollbars
+all follow along.
+
+Brand colour and status colour are separate. `accent` drives primary buttons, the active
+section, focus rings and selection, so it carries the theme's identity. Green still means
+succeeded, amber still means careful and red still means destructive, in every theme.
+
+Density is a separate setting: compact, comfortable or spacious, changing row heights and the
+base text size.
+
+Adding a theme means adding one object to `src/shared/themes.ts`. Then run:
+
+```bash
+npm run themes:check
+```
+
+That walks every text-on-surface pair in each theme and fails if any falls below its WCAG
+target, which is easy to do by accident: a colour that reads well on a dark panel usually does
+not on a light one.
+
 ## Running it
 
 Needs Node.js 20 or newer and a Linux server you can reach over SSH.
@@ -128,7 +157,7 @@ DWG_HOST=127.0.0.1 DWG_PORT=2222 DWG_USER=root DWG_PASS=testpass123 npm run smok
 
 Run it as a non-root user too, which is the case that exercises sudo and the SFTP fallback.
 
-Type checking is `npm run typecheck`.
+Type checking is `npm run typecheck`, and `npm run themes:check` validates theme contrast.
 
 ## Layout
 

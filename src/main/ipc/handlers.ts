@@ -1,4 +1,4 @@
-import { dialog, ipcMain, shell, type BrowserWindow } from 'electron'
+import { dialog, ipcMain, nativeTheme, shell, type BrowserWindow } from 'electron'
 import { basename } from 'node:path'
 import type { AppSettings, HostConfig } from '@shared/types'
 import { sshManager } from '../ssh/manager'
@@ -166,6 +166,30 @@ export function registerIpc(getWindow: () => BrowserWindow | null): void {
       await shell.openExternal(url)
       return true
     })
+  )
+
+  ipcMain.handle(
+    CHANNELS.setWindowChrome,
+    (_e, chrome: { background: string; symbol: string; mode: 'dark' | 'light' }) =>
+      wrap(() => {
+        const win = getWindow()
+        if (!win || win.isDestroyed()) return false
+        win.setBackgroundColor(chrome.background)
+        // the overlay only exists where we asked for a hidden title bar
+        if (process.platform === 'win32') {
+          try {
+            win.setTitleBarOverlay({
+              color: chrome.background,
+              symbolColor: chrome.symbol,
+              height: 40
+            })
+          } catch {
+            /* older Electron or an unsupported platform */
+          }
+        }
+        nativeTheme.themeSource = chrome.mode
+        return true
+      })
   )
 
   ipcMain.handle(CHANNELS.appInfo, () =>

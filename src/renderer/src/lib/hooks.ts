@@ -1,5 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { getTheme, type Theme } from '@shared/themes'
 import { api } from './api'
+import { resolveThemeId } from './theme'
 import { useApp } from '../state/store'
 
 interface ResourceOptions {
@@ -175,4 +177,11 @@ export function useDebounced<T>(value: T, delay = 250): T {
     return () => window.clearTimeout(timer)
   }, [value, delay])
   return debounced
+}
+
+/** The theme the active server resolves to, honouring its per-host override. */
+export function useActiveTheme(): Theme {
+  const hostTheme = useApp((s) => s.hosts.find((host) => host.id === s.activeHostId)?.theme)
+  const defaultTheme = useApp((s) => s.settings.defaultTheme)
+  return getTheme(resolveThemeId(hostTheme, defaultTheme))
 }

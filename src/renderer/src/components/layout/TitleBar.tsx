@@ -32,12 +32,12 @@ export function TitleBar(): React.JSX.Element {
     >
       {/* brand */}
       <div className="flex shrink-0 items-center gap-2">
-        <div className="grid size-6 place-items-center rounded-md bg-run/14 ring-1 ring-run/30">
-          <Terminal size={13} className="text-run-bright" aria-hidden />
+        <div className="grid size-6 place-items-center rounded-md bg-accent/14 ring-1 ring-accent/30">
+          <Terminal size={13} className="text-accent-bright" aria-hidden />
         </div>
         <div className="leading-none">
           <span className="text-[12.5px] font-semibold tracking-tight text-ink">DontWorry</span>
-          <span className="text-[12.5px] font-semibold tracking-tight text-run-bright">GUI</span>
+          <span className="text-[12.5px] font-semibold tracking-tight text-accent-bright">GUI</span>
         </div>
       </div>
 

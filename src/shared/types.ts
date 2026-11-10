@@ -26,6 +26,8 @@ export interface HostConfig {
   useSudo: boolean
   /** accent hue used to colour-code this host across the UI */
   accent: string
+  /** theme id for this server; falls back to the global default when unset */
+  theme?: string
   group?: string
   notes?: string
   keepAliveSeconds: number
@@ -376,6 +378,10 @@ export interface TerminalData {
 // Settings
 
 export interface AppSettings {
+  /** theme used for servers that have not picked one of their own */
+  defaultTheme: string
+  /** row height and text size for the whole app */
+  density: 'compact' | 'comfortable' | 'spacious'
   /** when true, write/destructive commands are shown but never executed */
   dryRun: boolean
   /** ask before every write/destructive action */
@@ -389,6 +395,8 @@ export interface AppSettings {
 }
 
 export const DEFAULT_SETTINGS: AppSettings = {
+  defaultTheme: 'midnight',
+  density: 'comfortable',
   dryRun: false,
   confirmWrites: false,
   confirmDestructive: true,

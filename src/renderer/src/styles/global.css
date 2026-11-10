@@ -1,5 +1,10 @@
 @import '@fontsource-variable/inter';
 @import '@fontsource-variable/jetbrains-mono';
+@import '@fontsource/ubuntu/400.css';
+@import '@fontsource/ubuntu/500.css';
+@import '@fontsource/ubuntu/700.css';
+@import '@fontsource/ubuntu-mono/400.css';
+@import '@fontsource/ubuntu-mono/700.css';
 @import '@xterm/xterm/css/xterm.css';
 @import 'tailwindcss';
 
@@ -26,9 +31,16 @@
   --color-ink-faint: #64718d;
   --color-ink-ghost: #45506a;
 
+  --color-accent: #10b981;
+  --color-accent-bright: #34d399;
+  --color-accent-dim: #064e3b;
+  --color-on-accent: #05070d;
+
   --color-run: #10b981;
   --color-run-bright: #34d399;
   --color-run-dim: #064e3b;
+
+  --color-scrim: rgb(2 4 9 / 0.72);
 
   --color-info: #60a5fa;
   --color-info-dim: #1e3a5f;
@@ -64,6 +76,14 @@
   --space-5: 24px;
   --space-6: 32px;
 
+  --grid-line: rgb(255 255 255 / 0.022);
+  --scrollbar-thumb: #243049;
+  --scrollbar-thumb-hover: #33415f;
+  --shadow-inset: rgb(255 255 255 / 0.03);
+  --shadow-drop: rgb(0 0 0 / 0.8);
+  --row-h: 30px;
+  --app-font-size: 13px;
+
   --rail: 56px;
   --sidebar: 236px;
   --titlebar: 40px;
@@ -78,6 +98,10 @@
   --z-palette: 120;
 
   color-scheme: dark;
+}
+
+html[data-mode='light'] {
+  color-scheme: light;
 }
 
 /* ------------------------------------------------------------------ *
@@ -98,7 +122,7 @@ body {
   background: var(--color-base);
   color: var(--color-ink);
   font-family: var(--font-sans);
-  font-size: 13px;
+  font-size: var(--app-font-size);
   line-height: 1.5;
   font-feature-settings: 'cv05' 1, 'ss03' 1;
   -webkit-font-smoothing: antialiased;
@@ -136,7 +160,7 @@ button:disabled,
 }
 
 :focus-visible {
-  outline: 2px solid var(--color-run-bright);
+  outline: 2px solid var(--color-accent-bright);
   outline-offset: 2px;
   border-radius: var(--radius-sm);
 }
@@ -146,7 +170,7 @@ button:disabled,
  * ------------------------------------------------------------------ */
 * {
   scrollbar-width: thin;
-  scrollbar-color: var(--color-edge) transparent;
+  scrollbar-color: var(--scrollbar-thumb) transparent;
 }
 
 ::-webkit-scrollbar {
@@ -159,14 +183,14 @@ button:disabled,
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #243049;
+  background: var(--scrollbar-thumb);
   border: 3px solid transparent;
   background-clip: content-box;
   border-radius: 99px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #33415f;
+  background: var(--scrollbar-thumb-hover);
   background-clip: content-box;
 }
 
@@ -188,8 +212,8 @@ button:disabled,
   border: 1px solid var(--color-line);
   border-radius: var(--radius-lg);
   box-shadow:
-    0 1px 0 0 rgb(255 255 255 / 0.03) inset,
-    0 12px 32px -18px rgb(0 0 0 / 0.8);
+    0 1px 0 0 var(--shadow-inset) inset,
+    0 12px 32px -18px var(--shadow-drop);
 }
 
 @utility glass {
@@ -204,8 +228,8 @@ button:disabled,
 
 @utility grid-fade {
   background-image:
-    linear-gradient(to right, rgb(255 255 255 / 0.022) 1px, transparent 1px),
-    linear-gradient(to bottom, rgb(255 255 255 / 0.022) 1px, transparent 1px);
+    linear-gradient(to right, var(--grid-line) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px);
   background-size: 26px 26px;
 }
 
@@ -336,6 +360,17 @@ html[data-reduce-motion='true'] *::after {
 
 .xterm .xterm-screen canvas {
   image-rendering: -webkit-optimize-contrast;
+}
+
+/* a brief crossfade so switching theme does not feel like a reload */
+html.theming,
+html.theming body,
+html.theming * {
+  transition:
+    background-color 220ms var(--ease-in-out-soft),
+    border-color 220ms var(--ease-in-out-soft),
+    color 220ms var(--ease-in-out-soft),
+    fill 220ms var(--ease-in-out-soft);
 }
 
 /* the drag region of our custom title bar */

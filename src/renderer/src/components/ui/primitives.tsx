@@ -16,7 +16,7 @@ type Size = 'xs' | 'sm' | 'md'
 
 const VARIANTS: Record<Variant, string> = {
   primary:
-    'bg-run text-void font-semibold hover:bg-run-bright active:bg-run shadow-[0_1px_0_0_rgba(255,255,255,.18)_inset]',
+    'bg-accent text-on-accent font-semibold hover:bg-accent-bright active:bg-accent shadow-[0_1px_0_0_rgba(255,255,255,.18)_inset]',
   secondary: 'bg-overlay text-ink hover:bg-hover border border-edge/70',
   ghost: 'text-ink-dim hover:text-ink hover:bg-hover',
   outline: 'border border-edge text-ink-dim hover:text-ink hover:border-ink-faint hover:bg-hover/60',
@@ -96,7 +96,7 @@ export const IconButton = forwardRef<HTMLButtonElement, IconButtonProps>(functio
         'active:scale-95 disabled:pointer-events-none disabled:opacity-40',
         box,
         VARIANTS[variant],
-        active && 'bg-run/15 text-run-bright',
+        active && 'bg-accent/15 text-accent-bright',
         className
       )}
       {...rest}
@@ -222,7 +222,7 @@ export const Select = forwardRef<HTMLSelectElement, SelectHTMLAttributes<HTMLSel
         ref={ref}
         className={cn(
           'h-8 w-full appearance-none rounded-md border border-line bg-void/60 px-2.5 pr-7 text-[13px] text-ink',
-          "bg-[url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2364718d' stroke-width='2'><path d='m6 9 6 6 6-6'/></svg>\")]",
+          "bg-[url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%238a93a3' stroke-width='2'><path d='m6 9 6 6 6-6'/></svg>\")]",
           'bg-[length:14px] bg-[right_6px_center] bg-no-repeat',
           'transition-colors duration-150 hover:border-edge focus:border-run/60 focus:outline-none',
           className
@@ -301,7 +301,7 @@ export function Toggle({
           checked
             ? tone === 'warn'
               ? 'border-warn/50 bg-warn/30'
-              : 'border-run/50 bg-run/30'
+              : 'border-accent/50 bg-accent/30'
             : 'border-line bg-void'
         )}
       >
@@ -311,7 +311,7 @@ export function Toggle({
             checked
               ? tone === 'warn'
                 ? 'left-[16px] bg-warn'
-                : 'left-[16px] bg-run-bright'
+                : 'left-[16px] bg-accent-bright'
               : 'left-[2px] bg-ink-ghost'
           )}
         />

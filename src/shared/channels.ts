@@ -25,6 +25,7 @@ export const CHANNELS = {
   revealPath: 'shell:reveal',
   openExternal: 'shell:openExternal',
   appInfo: 'app:info',
+  setWindowChrome: 'app:windowChrome',
   evConnection: 'ev:connection',
   evCommand: 'ev:command',
   evTerminalData: 'ev:terminal:data',

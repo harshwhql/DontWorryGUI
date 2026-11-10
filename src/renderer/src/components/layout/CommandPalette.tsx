@@ -142,7 +142,7 @@ export function CommandPalette(): React.JSX.Element | null {
       className="fixed inset-0 flex items-start justify-center pt-[12vh]"
       style={{ zIndex: 'var(--z-palette)' }}
     >
-      <div className="absolute inset-0 bg-void/70 backdrop-blur-[3px]" onClick={() => setOpen(false)} aria-hidden />
+      <div className="absolute inset-0 bg-scrim backdrop-blur-[3px]" onClick={() => setOpen(false)} aria-hidden />
 
       <div
         role="dialog"
@@ -154,7 +154,7 @@ export function CommandPalette(): React.JSX.Element | null {
           {rawMode ? (
             <SquareTerminal size={15} className="shrink-0 text-warn" aria-hidden />
           ) : (
-            <Zap size={15} className="shrink-0 text-run-bright" aria-hidden />
+            <Zap size={15} className="shrink-0 text-accent-bright" aria-hidden />
           )}
           <input
             ref={inputRef}
@@ -198,7 +198,7 @@ export function CommandPalette(): React.JSX.Element | null {
                   onClick={() => pick(entry)}
                   className={cn(
                     'flex w-full items-center gap-2.5 rounded-md px-2.5 py-1.5 text-left transition-colors duration-100',
-                    selected ? 'bg-run/12' : 'hover:bg-hover/50'
+                    selected ? 'bg-accent/12' : 'hover:bg-hover/50'
                   )}
                 >
                   <span className="grid size-5 shrink-0 place-items-center rounded-sm bg-void/60">

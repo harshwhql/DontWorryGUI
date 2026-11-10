@@ -409,7 +409,7 @@ export function NetworkView(): React.JSX.Element {
                   <p className="text-[11.5px] leading-relaxed text-ink-faint">
                     Rules are applied in order. Adding a rule here runs the native command for this
                     backend. Tap the{' '}
-                    <span className="text-run-bright">command icon</span> on any button to read it
+                    <span className="text-accent-bright">command icon</span> on any button to read it
                     first.
                   </p>
                 </div>

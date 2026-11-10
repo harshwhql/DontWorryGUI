@@ -386,7 +386,7 @@ export function FilesView(): React.JSX.Element {
             type="checkbox"
             checked={showHidden}
             onChange={(event) => setShowHidden(event.target.checked)}
-            className="size-3 accent-[var(--color-run)]"
+            className="size-3 accent-[var(--color-accent)]"
           />
           Hidden files
         </label>
@@ -394,7 +394,7 @@ export function FilesView(): React.JSX.Element {
 
       {/* bulk action bar */}
       {selection.length > 0 ? (
-        <div className="anim-fade-up flex shrink-0 flex-wrap items-center gap-1.5 border-b border-line bg-run/6 px-3 py-1.5">
+        <div className="anim-fade-up flex shrink-0 flex-wrap items-center gap-1.5 border-b border-line bg-accent/6 px-3 py-1.5">
           <Badge tone="run">{selection.length} selected</Badge>
           {selection.length === 1 ? (
             <Button
@@ -912,7 +912,7 @@ function ChmodDialog({
                     checked={(digits[classIndex] & bit.value) !== 0}
                     onChange={() => toggle(classIndex, bit.value)}
                     aria-label={`${cls.label} ${bit.label}`}
-                    className="size-3.5 accent-[var(--color-run)]"
+                    className="size-3.5 accent-[var(--color-accent)]"
                   />
                 </label>
               ))}

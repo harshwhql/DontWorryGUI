@@ -1,4 +1,7 @@
-import { Code2, Cog, Eye, FlaskConical, Gauge, Lock, Terminal, Unlock } from 'lucide-react'
+import { Code2, Cog, Eye, FlaskConical, Gauge, Lock, Palette, Terminal, Unlock } from 'lucide-react'
+import { DENSITIES, getTheme } from '@shared/themes'
+import { ThemePicker } from '../../components/ThemePicker'
+import { Segmented } from '../../components/ui/primitives'
 import { Badge, Button, Field, Panel, PanelHeader, Select, Toggle } from '../../components/ui/primitives'
 import { KeyValue } from '../../components/ui/data'
 import { ViewHeader } from '../../components/layout/ViewHeader'
@@ -11,6 +14,7 @@ export function SettingsView(): React.JSX.Element {
   const descriptors = useApp((s) => s.descriptors)
   const audit = useApp((s) => s.audit)
   const clearAudit = useApp((s) => s.clearAudit)
+  const activeHost = useApp((s) => s.hosts.find((h) => h.id === s.activeHostId))
 
   const byCategory = descriptors.reduce<Record<string, number>>((acc, descriptor) => {
     acc[descriptor.category] = (acc[descriptor.category] ?? 0) + 1
@@ -23,6 +27,46 @@ export function SettingsView(): React.JSX.Element {
 
       <div className="min-h-0 flex-1 overflow-y-auto p-4">
         <div className="mx-auto grid w-full max-w-4xl grid-cols-1 gap-3 lg:grid-cols-2">
+          {/* appearance */}
+          <Panel className="lg:col-span-2">
+            <PanelHeader
+              title="Appearance"
+              icon={Palette}
+              subtitle="Each server can carry its own theme, so you can tell production from staging at a glance"
+            />
+            <div className="flex flex-col gap-4 p-3">
+              <div>
+                <p className="mb-2 text-[11px] font-medium text-ink-dim">
+                  Default theme
+                  {activeHost?.theme ? (
+                    <span className="ml-1.5 text-[10.5px] font-normal text-warn">
+                      {activeHost.label} overrides this with {getTheme(activeHost.theme).label}
+                    </span>
+                  ) : null}
+                </p>
+                <ThemePicker
+                  value={settings.defaultTheme}
+                  onChange={(next) => void patch({ defaultTheme: next ?? 'midnight' })}
+                />
+                <p className="mt-2 text-[10.5px] leading-snug text-ink-ghost">
+                  Set a per-server theme in that server&apos;s connection settings.
+                </p>
+              </div>
+
+              <div>
+                <p className="mb-1.5 text-[11px] font-medium text-ink-dim">Density</p>
+                <Segmented
+                  value={settings.density}
+                  onChange={(next) => void patch({ density: next })}
+                  options={DENSITIES.map((density) => ({ value: density.id, label: density.label }))}
+                />
+                <p className="mt-1.5 text-[10.5px] leading-snug text-ink-ghost">
+                  {DENSITIES.find((d) => d.id === settings.density)?.description}
+                </p>
+              </div>
+            </div>
+          </Panel>
+
           {/* safety */}
           <Panel className="lg:col-span-2">
             <PanelHeader

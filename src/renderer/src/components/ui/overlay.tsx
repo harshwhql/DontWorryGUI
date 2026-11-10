@@ -59,7 +59,7 @@ export function Modal({
       role="presentation"
     >
       <div
-        className="absolute inset-0 bg-void/72 backdrop-blur-[3px]"
+        className="absolute inset-0 bg-scrim backdrop-blur-[3px]"
         onClick={() => dismissable && onClose()}
         aria-hidden
       />
@@ -161,7 +161,7 @@ export function ConfirmDialog(): React.JSX.Element | null {
               Command that will run
             </span>
           </div>
-          <pre className="selectable max-h-48 overflow-auto px-3 py-2.5 text-[11.5px] leading-relaxed text-run-bright">
+          <pre className="selectable max-h-48 overflow-auto px-3 py-2.5 text-[11.5px] leading-relaxed text-accent-bright">
             {confirm.command}
           </pre>
         </div>

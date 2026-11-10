@@ -23,6 +23,7 @@ import { SchedulerView } from './features/scheduler/SchedulerView'
 import { SettingsView } from './features/settings/SettingsView'
 import { TerminalView } from './features/terminal/TerminalView'
 import { bridgeAvailable } from './lib/api'
+import { applyTheme, resolveThemeId } from './lib/theme'
 import { useApp } from './state/store'
 import { useHotkey } from './lib/hooks'
 
@@ -39,6 +40,17 @@ export default function App(): React.JSX.Element {
   const [hostForm, setHostForm] = useState<'new' | 'edit' | null>(null)
 
   const [bootError, setBootError] = useState<string | null>(null)
+
+  // each server can carry its own theme, so this follows the active host
+  const hostTheme = useApp((s) => s.hosts.find((h) => h.id === s.activeHostId)?.theme)
+  const defaultTheme = useApp((s) => s.settings.defaultTheme)
+  const density = useApp((s) => s.settings.density)
+  const themeId = resolveThemeId(hostTheme, defaultTheme)
+
+  useEffect(() => {
+    if (!booted) return
+    applyTheme(themeId, density)
+  }, [booted, themeId, density])
 
   useEffect(() => {
     if (!bridgeAvailable) return
@@ -72,7 +84,7 @@ export default function App(): React.JSX.Element {
           <p className="mt-2 text-[12.5px] leading-relaxed text-ink-dim">
             The renderer is running, but the privileged bridge that opens SSH connections is not
             there, so this is the Vite dev URL in an ordinary browser rather than the app window.
-            Run <code className="text-run-bright">npm run dev</code> and use the window it opens.
+            Run <code className="text-accent-bright">npm run dev</code> and use the window it opens.
           </p>
         </div>
       </div>
@@ -94,8 +106,8 @@ export default function App(): React.JSX.Element {
     return (
       <div className="grid h-full place-items-center bg-base">
         <div className="flex flex-col items-center gap-3">
-          <div className="grid size-10 place-items-center rounded-xl bg-run/14 ring-1 ring-run/30">
-            <Terminal size={18} className="text-run-bright" aria-hidden />
+          <div className="grid size-10 place-items-center rounded-xl bg-accent/14 ring-1 ring-accent/30">
+            <Terminal size={18} className="text-accent-bright" aria-hidden />
           </div>
           <div className="flex items-center gap-2 text-[12px] text-ink-faint">
             <Spinner /> Opening the host book…

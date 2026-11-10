@@ -8,7 +8,9 @@ import {
   type ReactNode
 } from 'react'
 import { ArrowDown, ArrowUp, Check, Copy, type LucideIcon } from 'lucide-react'
+import { getDensity } from '@shared/themes'
 import { cn, usageBar, usageTone } from '../../lib/format'
+import { useApp } from '../../state/store'
 import { IconButton } from './primitives'
 import { useCopy } from '../../lib/hooks'
 
@@ -268,7 +270,7 @@ export function CodeBlock({
 }): React.JSX.Element {
   const copy = useCopy()
   const [copied, setCopied] = useState(false)
-  const toneClass = tone === 'run' ? 'text-run-bright' : tone === 'danger' ? 'text-danger' : 'text-ink-dim'
+  const toneClass = tone === 'run' ? 'text-accent-bright' : tone === 'danger' ? 'text-danger' : 'text-ink-dim'
 
   return (
     <div className={cn('group relative overflow-hidden rounded-md border border-line bg-void', className)}>
@@ -318,7 +320,6 @@ export interface Column<T> {
   headerClassName?: string
 }
 
-const ROW_HEIGHT = 30
 
 export function DataTable<T>({
   rows,
@@ -347,6 +348,7 @@ export function DataTable<T>({
   footer?: ReactNode
   className?: string
 }): React.JSX.Element {
+  const rowHeight = useApp((s) => getDensity(s.settings.density).rowHeight)
   const [sortKey, setSortKey] = useState(defaultSortKey)
   const [sortDir, setSortDir] = useState<'asc' | 'desc'>(defaultSortDir)
   const scrollRef = useRef<HTMLDivElement>(null)
@@ -372,10 +374,10 @@ export function DataTable<T>({
     if (!element) return
     const viewportHeight = element.clientHeight || 600
     setHeight(viewportHeight)
-    const start = Math.max(0, Math.floor(element.scrollTop / ROW_HEIGHT) - 12)
-    const visible = Math.ceil(viewportHeight / ROW_HEIGHT) + 24
+    const start = Math.max(0, Math.floor(element.scrollTop / rowHeight) - 12)
+    const visible = Math.ceil(viewportHeight / rowHeight) + 24
     setViewport({ start, end: start + visible })
-  }, [])
+  }, [rowHeight])
 
   useLayoutEffect(() => {
     recalc()
@@ -391,8 +393,8 @@ export function DataTable<T>({
 
   const virtual = sorted.length > 120
   const slice = virtual ? sorted.slice(viewport.start, viewport.end) : sorted
-  const padTop = virtual ? viewport.start * ROW_HEIGHT : 0
-  const padBottom = virtual ? Math.max(0, (sorted.length - viewport.end) * ROW_HEIGHT) : 0
+  const padTop = virtual ? viewport.start * rowHeight : 0
+  const padBottom = virtual ? Math.max(0, (sorted.length - viewport.end) * rowHeight) : 0
 
   const toggleSort = (column: Column<T>): void => {
     if (!column.sort) return
@@ -469,10 +471,10 @@ export function DataTable<T>({
                     className={cn(
                       'grid items-center gap-2 border-b border-line/45 px-3 transition-colors duration-100',
                       onRowClick && 'cursor-pointer hover:bg-hover/55',
-                      selected && 'bg-run/8 hover:bg-run/12',
+                      selected && 'bg-accent/8 hover:bg-accent/12',
                       rowTone?.(row)
                     )}
-                    style={{ gridTemplateColumns: template, height: ROW_HEIGHT }}
+                    style={{ gridTemplateColumns: template, height: rowHeight }}
                   >
                     {columns.map((column) => (
                       <div

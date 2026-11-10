@@ -84,6 +84,8 @@ const api = {
   system: {
     reveal: (path: string) => call<boolean>(CHANNELS.revealPath, path),
     openExternal: (url: string) => call<boolean>(CHANNELS.openExternal, url),
+    setWindowChrome: (chrome: { background: string; symbol: string; mode: 'dark' | 'light' }) =>
+      call<boolean>(CHANNELS.setWindowChrome, chrome),
     info: () =>
       call<{
         actionCount: number

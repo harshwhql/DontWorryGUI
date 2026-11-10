@@ -105,7 +105,7 @@ function HostDot({
       {/* active indicator rail */}
       <span
         className={cn(
-          'absolute -left-2.5 w-[3px] rounded-r-full bg-run transition-all duration-200 ease-out',
+          'absolute -left-2.5 w-[3px] rounded-r-full bg-accent transition-all duration-200 ease-out',
           active ? 'h-5 opacity-100' : 'h-1.5 opacity-0 group-hover:opacity-60'
         )}
         aria-hidden

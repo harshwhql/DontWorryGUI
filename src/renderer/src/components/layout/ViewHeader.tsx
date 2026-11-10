@@ -58,7 +58,7 @@ export function ViewHeader({
             label="Refresh"
             loading={refreshing}
             onClick={onRefresh}
-            className={refreshing ? 'text-run-bright' : undefined}
+            className={refreshing ? 'text-accent-bright' : undefined}
           />
         </div>
       ) : null}

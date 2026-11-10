@@ -83,7 +83,7 @@ export function Sidebar(): React.JSX.Element {
                       className={cn(
                         'group flex h-7 w-full items-center gap-2 rounded-md px-2 text-left text-[12.5px] transition-colors duration-150',
                         active
-                          ? 'bg-run/12 font-medium text-run-bright'
+                          ? 'bg-accent/12 font-medium text-accent-bright'
                           : reason
                             ? 'text-ink-ghost hover:bg-hover/40'
                             : 'text-ink-dim hover:bg-hover hover:text-ink'
@@ -92,7 +92,7 @@ export function Sidebar(): React.JSX.Element {
                     >
                       <Icon
                         size={14}
-                        className={cn('shrink-0', active ? 'text-run-bright' : 'text-ink-faint')}
+                        className={cn('shrink-0', active ? 'text-accent-bright' : 'text-ink-faint')}
                         aria-hidden
                       />
                       <span className="min-w-0 flex-1 truncate">{item.label}</span>
